@@ -1,0 +1,29 @@
+"use client";
+import React from "react";
+import { ClipboardList, ArrowLeft, Plus, CheckCircle2, Clock, User, Stethoscope, Activity, Target, Calendar, ChevronRight, ShieldCheck, Save } from "lucide-react";
+import { Button } from "@/frontend/components/ui/button";
+import { useAsyncData, useDocumentTitle } from "@/frontend/hooks";
+import { agencyService } from "@/backend/services/agency.service";
+import { PageSkeleton } from "@/frontend/components/PageSkeleton";
+import { useParams } from "react-router";
+import { cn } from "@/frontend/theme/tokens";
+import { PageHero } from "@/frontend/components/shared/PageHero";
+import { useTranslation } from "react-i18next";
+
+export default function ClientCarePlanPage() {
+  const { t: tDocTitle } = useTranslation("common");
+  useDocumentTitle(tDocTitle("pageTitles.clientCarePlan", "Client Care Plan"));
+
+  const { id } = useParams();
+  const { data: carePlan, loading } = useAsyncData(() => agencyService.getClientCarePlan(id ?? ""), [id]);
+
+  if (loading || !carePlan) return <PageSkeleton />;
+
+  return (
+    <div>
+      <PageHero gradient="radial-gradient(143.86% 887.35% at -10.97% -22.81%, #7CE577 0%, #5FB865 100%)" className="pt-8 pb-32 px-6"><div className="max-w-5xl mx-auto"><div className="flex justify-between items-center mb-12"><div className="flex items-center gap-4 text-white"><h1 className="text-2xl font-bold">Institutional Care Plan</h1></div><Button className="bg-white text-[#5FB865] hover:bg-white/90 font-black rounded-xl h-11 px-6 shadow-lg"><Save className="w-4 h-4 mr-2" /> Save & Broadcast</Button></div><div className="finance-card p-6 !bg-white/10 !backdrop-blur-xl !border-white/20 flex items-center justify-between text-white"><div className="flex items-center gap-4"><div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center font-black">SH</div><div><p className="font-bold text-lg">Square Hospital - Ward 4</p><p className="text-white/70 text-sm">Patient Care Optimization {"\u2022"} Active</p></div></div><div className="text-right"><p className="text-[10px] font-black uppercase tracking-widest text-white/50 mb-1">Contract Health</p><p className="text-xl font-black text-[#E8F9E7]">98.2% Success</p></div></div></div></PageHero>
+      <div className="max-w-5xl mx-auto px-6 -mt-16"><div className="grid grid-cols-1 lg:grid-cols-3 gap-8"><div className="lg:col-span-2 space-y-6"><div className="finance-card p-8"><h3 className="text-lg font-bold text-gray-800 mb-8 flex items-center gap-2"><Target className="w-5 h-5 text-[#FEB4C5]" />Primary Objectives</h3><div className="space-y-4">{[{ goal: "Reduce average response time to < 2 minutes", ok: true }, { goal: "Complete 100% medication adherence logs", ok: true }, { goal: "Minimize patient fall rate to zero", ok: false }].map((g, i) => (<div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100"><div className={`w-6 h-6 rounded-full flex items-center justify-center ${g.ok ? 'bg-[#7CE577] text-white' : 'bg-gray-200 text-gray-400'}`}><CheckCircle2 className="w-4 h-4" /></div><input className="bg-transparent border-none outline-none text-sm font-bold text-gray-700 flex-1" defaultValue={g.goal} /></div>))}<Button variant="ghost" className="text-[10px] font-black text-[#FEB4C5] uppercase tracking-widest">+ Add Objective</Button></div></div><div className="finance-card p-8"><h3 className="text-lg font-bold text-gray-800 mb-8 flex items-center gap-2"><ClipboardList className="w-5 h-5 text-[#7CE577]" />Staffing Matrix</h3><div className="space-y-4">{[{ role: "Nurse Supervisor", count: 2, shift: "Morning" }, { role: "Patient Aid", count: 8, shift: "Rotating" }, { role: "Physiotherapist", count: 1, shift: "Afternoon" }].map((s, i) => (<div key={i} className="p-5 rounded-2xl border border-gray-100 flex justify-between items-center hover:border-[#7CE577] transition-all"><div className="flex items-center gap-4"><div className="w-10 h-10 rounded-xl bg-[#FFF5F7] flex items-center justify-center text-[#DB869A]"><User className="w-5 h-5" /></div><div><p className="text-sm font-bold text-gray-800">{s.role}</p><p className="text-[10px] text-gray-400 uppercase font-bold">{s.shift} Shift</p></div></div><span className="text-xl font-black text-gray-800">{s.count}</span></div>))}</div></div></div><aside className="lg:col-span-1 space-y-6"><div className="finance-card p-8 bg-gray-900 text-white"><h3 className="font-bold mb-6">Client Requirements</h3><div className="space-y-4"><div className="p-4 rounded-xl bg-white/5 border border-white/10"><p className="text-[10px] font-bold text-white/40 uppercase mb-2">Required Certs</p><div className="flex flex-wrap gap-2">{["BLS", "ACLS", "HIPAA"].map(c => <span key={c} className="text-[9px] font-black bg-[#7CE577] text-gray-900 px-2 py-0.5 rounded">{c}</span>)}</div></div><div className="p-4 rounded-xl bg-white/5 border border-white/10"><p className="text-[10px] font-bold text-white/40 uppercase mb-2">Dress Code</p><p className="text-xs font-medium">Full Scrubs (Navy Blue) with CareNet + Hospital ID.</p></div></div></div><div className="finance-card p-8 border-l-4 border-[#FEB4C5]"><h3 className="font-bold text-gray-800 mb-4">Risk Assessment</h3><div className="space-y-4"><div className="flex justify-between text-xs mb-1"><span className="text-gray-400 uppercase font-bold">Severity Score</span><span className="text-red-500 font-black">Low Risk</span></div><div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden"><div className="h-full bg-[#7CE577]" style={{ width: '15%' }} /></div></div></div></aside></div></div>
+      <style dangerouslySetInnerHTML={{ __html: ".finance-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 2.5rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); }" }} />
+    </div>
+  );
+}

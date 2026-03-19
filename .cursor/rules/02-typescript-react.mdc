@@ -1,0 +1,15 @@
+---
+description: "CareNet 2 React and TypeScript guidance for components, hooks, routing, and conservative state management."
+globs:
+  - "**/*.{ts,tsx,js,jsx}"
+---
+
+# TypeScript And React
+
+- Prefer strict, explicit TypeScript over loose inferred shapes for exported helpers and shared hooks.
+- Prefer functional components and hooks.
+- Import router APIs from `react-router`.
+- Use the existing route helper patterns instead of inventing a second routing style.
+- Keep role-aware logic tied to `useAuth()` and `user.activeRole`.
+- Reuse the current folder structure before creating new app-level abstractions.
+- Prefer local state, context already in the repo, or existing service hooks over introducing another global state library.

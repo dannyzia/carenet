@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build / cache
+dist/
+.vite/
+*.tsbuildinfo
+
+# Environment (secrets)
+.env
+.env.*
+!.env.example
+
+# Logs & debug
+*.log
+npm-debug.log*
+
+# Tests & coverage
+coverage/
+playwright-report/
+test-results/
+.playwright/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Capacitor / native (generated or local)
+android/app/build/
+android/.gradle/
+android/local.properties
+ios/App/Pods/
+ios/DerivedData/

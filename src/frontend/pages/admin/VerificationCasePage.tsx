@@ -1,0 +1,34 @@
+"use client";
+
+import React from "react";
+import { ShieldCheck, FileText, CheckCircle2, XCircle, ArrowLeft, ChevronRight, User, MapPin, Search, ExternalLink, ShieldAlert, Clock, MessageSquare } from "lucide-react";
+import { Button } from "@/frontend/components/ui/button";
+import { useNavigate } from "react-router";
+import { PageHero } from "@/frontend/components/PageHero";
+import { cn } from "@/frontend/theme/tokens";
+import { useAsyncData, useDocumentTitle } from "@/frontend/hooks";
+import { adminService } from "@/backend/services/admin.service";
+import { PageSkeleton } from "@/frontend/components/PageSkeleton";
+import { useTranslation } from "react-i18next";
+
+export default function VerificationCasePage() {
+  const { t: tDocTitle } = useTranslation("common");
+  useDocumentTitle(tDocTitle("pageTitles.verificationCase", "Verification Case"));
+
+  const navigate = useNavigate();
+  const { data: caseData, loading } = useAsyncData(() => adminService.getVerificationCase("VC-001"));
+
+  if (loading || !caseData) return <PageSkeleton />;
+
+  return (
+    <div>
+      <PageHero gradient="radial-gradient(143.86% 887.35% at -10.97% -22.81%, #111827 0%, #000000 100%)" className="pt-8 pb-32 px-6"><div className="max-w-4xl mx-auto"><div className="flex justify-between items-center mb-8"><div className="flex items-center gap-4"><h1 className="text-2xl font-bold text-white">Verification Case #VER-9021</h1></div><div className="px-4 py-2 rounded-full bg-orange-500/20 text-orange-400 text-[10px] font-black uppercase tracking-widest border border-orange-500/20">Under Manual Review</div></div><div className="finance-card p-6 !bg-white/10 !backdrop-blur-xl !border-white/20 flex items-center justify-between"><div className="flex items-center gap-4 text-white"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100" className="w-14 h-14 rounded-2xl object-cover" alt="user" /><div><p className="font-bold text-lg">Sumaiya Akter</p><p className="text-white/70 text-sm">Professional Physiotherapist Application</p></div></div><div className="flex gap-2"><Button variant="ghost" className="text-white hover:bg-white/10 rounded-xl font-bold"><MessageSquare className="w-4 h-4 mr-2" /> Message</Button></div></div></div></PageHero>
+      <div className="max-w-4xl mx-auto px-6 -mt-16"><div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6"><div className="finance-card p-8"><h2 className="text-xl font-bold text-gray-800 mb-8 flex items-center gap-2"><FileText className="w-5 h-5 text-[#FEB4C5]" />NID Document Verification</h2><div className="aspect-[4/2.5] bg-gray-50 rounded-3xl border-2 border-dashed border-gray-100 relative overflow-hidden group"><img src="https://images.unsplash.com/photo-1589330273594-fade1ee91647?auto=format&fit=crop&q=80&w=800&h=500" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="nid" /><div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all"><Button className="bg-white text-gray-900 font-bold rounded-xl mb-4"><ExternalLink className="w-4 h-4 mr-2" /> View Full Resolution</Button><p className="text-white text-xs font-medium">Digital Watermark Detected (100% Match)</p></div></div><div className="grid grid-cols-2 gap-6 mt-8"><div className="p-4 rounded-2xl bg-gray-50 border border-gray-100"><p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Extracted Name</p><p className="font-bold text-gray-800">SUMAIYA AKTER</p></div><div className="p-4 rounded-2xl bg-gray-50 border border-gray-100"><p className="text-[10px] font-bold text-gray-400 uppercase mb-1">NID Number</p><p className="font-bold text-gray-800">1992-XXXX-XXXXX-XX</p></div></div></div>
+          <div className="finance-card p-8"><h2 className="text-xl font-bold text-gray-800 mb-8 flex items-center gap-2"><ShieldCheck className="w-5 h-5 text-[#7CE577]" />Professional Certification</h2><div className="flex items-start gap-6 p-6 rounded-3xl bg-[#E8F9E7]/30 border border-[#7CE577]/20"><div className="w-12 h-12 rounded-2xl bg-[#7CE577] text-white flex items-center justify-center flex-shrink-0"><CheckCircle2 /></div><div><h3 className="font-bold text-gray-800">Diploma in Physiotherapy</h3><p className="text-sm text-gray-500 mt-1">National Health Institute, 2020</p><div className="mt-4 p-3 rounded-xl bg-white border border-[#7CE577]/20 flex items-center justify-between"><span className="text-[10px] font-black text-[#5FB865] uppercase">Verified via Gov Portal</span><CheckCircle2 className="w-4 h-4 text-[#5FB865]" /></div></div></div></div></div>
+        <div className="lg:col-span-1 space-y-6"><div className="finance-card p-8"><h3 className="text-lg font-bold text-gray-800 mb-6">Case Decision</h3><div className="space-y-4"><Button className="w-full h-14 bg-[#7CE577] hover:bg-[#5FB865] text-white font-black rounded-2xl shadow-xl">Approve Professional</Button><Button className="w-full h-14 bg-red-500 hover:bg-red-600 text-white font-black rounded-2xl shadow-xl">Reject Application</Button><Button variant="ghost" className="w-full h-12 text-gray-400 font-bold border border-gray-100 rounded-2xl">Request More Info</Button></div></div><div className="finance-card p-6 bg-orange-50 border-orange-100"><div className="flex items-center gap-2 mb-4"><ShieldAlert className="w-5 h-5 text-orange-400" /><h3 className="text-orange-700 font-bold text-sm">Automated Alerts</h3></div><ul className="space-y-3">{["Photo mismatch (5%)", "License valid until 2028", "No criminal records found"].map((a, i) => (<li key={i} className="flex items-center gap-2 text-[10px] font-bold text-orange-600"><div className="w-1 h-1 rounded-full bg-orange-400" /> {a}</li>))}</ul></div><div className="finance-card p-6"><h3 className="font-bold text-gray-800 mb-4">Admin Audit</h3><div className="space-y-4"><div className="flex gap-3"><div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-[10px] font-black">AI</div><div><p className="text-[10px] font-bold text-gray-800">Auto-vetting Pass</p><p className="text-[10px] text-gray-400">Mar 15, 09:12 AM</p></div></div><div className="flex gap-3"><div className="w-8 h-8 rounded-full bg-[#FEB4C5] flex items-center justify-center text-white text-[10px] font-black">Admin</div><div><p className="text-[10px] font-bold text-gray-800">Manual review started</p><p className="text-[10px] text-gray-400">Mar 15, 10:45 AM</p></div></div></div></div></div>
+      </div></div>
+      <style dangerouslySetInnerHTML={{ __html: ".finance-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 3rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); }" }} />
+    </div>
+  );
+}

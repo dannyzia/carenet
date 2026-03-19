@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "dashboard": "ড্যাশবোর্ড",
+    "patients": "আমার রোগী",
+    "jobs": "আমার চাকরি",
+    "careLog": "সেবা লগ",
+    "schedule": "সময়সূচী",
+    "messages": "বার্তা",
+    "earnings": "আয়",
+    "reviews": "রিভিউ",
+    "documents": "ডকুমেন্ট",
+    "profile": "প্রোফাইল"
+  },
+  "dashboard": {
+    "welcome": "স্বাগতম, {{name}}",
+    "activeShift": "সক্রিয় শিফট",
+    "todaySchedule": "আজকের সময়সূচী",
+    "upcomingShifts": "আসন্ন শিফট",
+    "recentLogs": "সাম্প্রতিক লগ",
+    "earnings": "আয়"
+  },
+  "shift": {
+    "checkIn": "চেক ইন",
+    "checkOut": "চেক আউট",
+    "onTime": "সময়মত",
+    "late": "বিলম্বিত",
+    "gracePeriod": "গ্রেস পিরিয়ড",
+    "currentShift": "বর্তমান শিফট",
+    "shiftDetails": "শিফটের বিবরণ",
+    "startTime": "শুরুর সময়",
+    "endTime": "শেষের সময়",
+    "duration": "সময়কাল"
+  },
+  "careLog": {
+    "title": "নতুন সেবা লগ",
+    "whatLogging": "আপনি কি লগ করছেন?",
+    "meal": "খাবার",
+    "medication": "ওষুধ",
+    "vitals": "ভাইটালস",
+    "exercise": "ব্যায়াম",
+    "bathroom": "বাথরুম",
+    "sleep": "ঘুম",
+    "observation": "পর্যবেক্ষণ",
+    "incident": "ঘটনা",
+    "notes": "নোট",
+    "save": "সেবা লগ সংরক্ষণ",
+    "saved": "সেবা লগ সংরক্ষিত!",
+    "logAnother": "আরেকটি এন্ট্রি লগ করুন",
+    "recentLogs": "সাম্প্রতিক লগ (এই শিফট)"
+  },
+  "jobs": {
+    "available": "প্রাপ্ত চাকরি",
+    "applied": "আবেদনকৃত",
+    "matched": "মিলেছে",
+    "applyNow": "এখনই আবেদন করুন",
+    "viewDetails": "বিস্তারিত দেখুন"
+  }
+}

@@ -1,0 +1,78 @@
+# CareNet Translation Coverage CI Check
+# Runs on every PR that touches locale files or the translation scripts.
+# Fails the build if any language has missing translation keys.
+
+name: Translation Coverage
+
+on:
+  pull_request:
+    paths:
+      - 'src/locales/**'
+      - 'scripts/translate.mjs'
+      - 'scripts/check-translations.mjs'
+  push:
+    branches: [main]
+    paths:
+      - 'src/locales/**'
+
+jobs:
+  check-translations:
+    name: Check translation coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # No npm install needed — the check script uses only Node built-ins
+      - name: Check translation coverage
+        run: node scripts/check-translations.mjs
+
+      - name: Check coverage (strict mode)
+        run: node scripts/check-translations.mjs --strict
+        continue-on-error: true  # Strict mode is informational, not blocking
+
+      - name: Generate JSON report
+        if: always()
+        run: node scripts/check-translations.mjs --json > translation-report.json
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: translation-report
+          path: translation-report.json
+          retention-days: 30
+
+      # Optional: Post a summary comment on the PR
+      - name: PR Comment Summary
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('translation-report.json', 'utf8'));
+            const langs = Object.entries(report.languages);
+            const incomplete = langs.filter(([, l]) => l.missingKeys.length > 0);
+
+            if (incomplete.length === 0) return;
+
+            let body = '## Translation Coverage Report\n\n';
+            body += `| Language | Coverage | Missing |\n|---|---|---|\n`;
+            for (const [code, data] of langs) {
+              const icon = data.missingKeys.length === 0 ? ':white_check_mark:' : ':x:';
+              body += `| ${icon} ${code} | ${data.coverage}% | ${data.missingKeys.length} |\n`;
+            }
+            body += `\n**Fix:** Run \`pnpm translate --lang=${incomplete.map(([c]) => c).join(',')}\``;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });

@@ -1,0 +1,14 @@
+---
+description: "CareNet 2 localization guidance for English and Bangla content, runtime language support, and translation scripts."
+globs:
+  - "**/*.{ts,tsx,json,mjs}"
+---
+
+# Localization
+
+- Do not hardcode user-facing copy in components when it belongs in translations.
+- Add committed strings to both `src/locales/en/` and `src/locales/bn/`.
+- Keep using `useTranslation()` and the existing language helpers.
+- Remember that the app can load extra admin-managed languages at runtime; do not break that behavior by assuming only two languages exist internally.
+- Use the existing scripts when changing many keys: `npm run i18n:sync`, `npm run translate`, and `npm run translate:verify`.
+- Preserve locale-aware formatting for currency, dates, and labels where current helpers already exist.

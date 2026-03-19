@@ -1,0 +1,651 @@
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Reduced motion: disable Sonner toast slide/fade animations ─── */
+@media (prefers-reduced-motion: reduce) {
+  .cn-toast-no-motion,
+  .cn-toast-no-motion * {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* ─── UndoHint fade-in then fade-out keyframe ─── */
+@keyframes cn-undo-hint-fade {
+  0% { opacity: 0; transform: translateY(8px); }
+  10% { opacity: 1; transform: translateY(0); }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+:root {
+  /* ─── Base shadcn tokens ─── */
+  --font-size: 16px;
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #030213;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ─── CareNet Brand Colors ─── */
+  --cn-pink: #DB869A;
+  --cn-pink-light: #FEB4C5;
+  --cn-pink-bg: rgba(254, 180, 197, 0.125);
+  --cn-green: #5FB865;
+  --cn-green-light: #7CE577;
+  --cn-green-bg: rgba(124, 229, 119, 0.125);
+  --cn-purple: #7B5EA7;
+  --cn-purple-light: #A8AAFF;
+  --cn-purple-bg: rgba(128, 130, 237, 0.125);
+  --cn-amber: #E8A838;
+  --cn-amber-light: #FFB54D;
+  --cn-amber-bg: rgba(255, 181, 77, 0.125);
+  --cn-blue: #0288D1;
+  --cn-blue-light: #4FC3F7;
+  --cn-blue-bg: rgba(79, 195, 247, 0.125);
+  --cn-teal: #00897B;
+  --cn-teal-light: #80CBC4;
+  --cn-teal-bg: rgba(38, 198, 218, 0.125);
+  --cn-orange: #E64A19;
+  --cn-orange-light: #FFAB91;
+  --cn-orange-bg: rgba(255, 138, 101, 0.125);
+  --cn-red: #EF4444;
+
+  /* ─── CareNet Semantic Tokens ─── */
+  --cn-text: #535353;
+  --cn-text-secondary: #848484;
+  --cn-text-heading: #1E293B;
+  --cn-bg-page: #F5F7FA;
+  --cn-bg-card: #FFFFFF;
+  --cn-bg-sidebar: #FFFFFF;
+  --cn-bg-header: #FFFFFF;
+  --cn-bg-input: #F5F7FA;
+  --cn-border: #E5E7EB;
+  --cn-border-light: #F1F5F9;
+  --cn-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --cn-shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --cn-shadow-sidebar: 2px 0 20px rgba(0, 0, 0, 0.06);
+  --cn-shadow-header: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  /* ─── Colored Button Shadows (Hero) ─── */
+  --cn-shadow-pink: rgba(240, 161, 180, 0.35);
+  --cn-shadow-green: rgba(124, 229, 119, 0.35);
+  --cn-shadow-orange: rgba(230, 74, 25, 0.35);
+  --cn-bg-hero: #FFF5F7;
+
+  /* ─── Role Gradients ─── */
+  --cn-gradient-caregiver: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #FEB4C5 0%, #DB869A 100%);
+  --cn-gradient-guardian: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #A8F5A3 0%, #5FB865 100%);
+  --cn-gradient-admin: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #A8AAFF 0%, #6062CC 100%);
+  --cn-gradient-moderator: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #FFD49A 0%, #E8A838 100%);
+  --cn-gradient-patient: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #81D4FA 0%, #0288D1 100%);
+  --cn-gradient-agency: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #80CBC4 0%, #00897B 100%);
+  --cn-gradient-shop: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #FFAB91 0%, #E64A19 100%);
+  --cn-gradient-dark-hero: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #1E293B 0%, #0F172A 100%);
+
+  /* ─── Typography ─── */
+  --cn-font-family: 'Inter', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dark {
+  /* ─── Base shadcn dark ─── */
+  --background: #0F172A;
+  --foreground: #E2E8F0;
+  --card: #1E293B;
+  --card-foreground: #E2E8F0;
+  --popover: #1E293B;
+  --popover-foreground: #E2E8F0;
+  --primary: #E2E8F0;
+  --primary-foreground: #0F172A;
+  --secondary: #334155;
+  --secondary-foreground: #E2E8F0;
+  --muted: #334155;
+  --muted-foreground: #94A3B8;
+  --accent: #334155;
+  --accent-foreground: #E2E8F0;
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: #334155;
+  --input: #334155;
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: #1E293B;
+  --sidebar-foreground: #E2E8F0;
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: #E2E8F0;
+  --sidebar-accent: #334155;
+  --sidebar-accent-foreground: #E2E8F0;
+  --sidebar-border: #334155;
+  --sidebar-ring: oklch(0.439 0 0);
+
+  /* ─── CareNet Brand (slightly brighter for dark) ─── */
+  --cn-pink: #E99AAF;
+  --cn-pink-light: #FEB4C5;
+  --cn-pink-bg: rgba(254, 180, 197, 0.15);
+  --cn-green: #72CC78;
+  --cn-green-light: #7CE577;
+  --cn-green-bg: rgba(124, 229, 119, 0.15);
+  --cn-purple: #9B82C0;
+  --cn-purple-light: #B8BAFF;
+  --cn-purple-bg: rgba(128, 130, 237, 0.15);
+  --cn-amber: #F0BA50;
+  --cn-amber-light: #FFC85C;
+  --cn-amber-bg: rgba(255, 181, 77, 0.15);
+  --cn-blue: #29A6E8;
+  --cn-blue-light: #68D0FF;
+  --cn-blue-bg: rgba(79, 195, 247, 0.15);
+  --cn-teal: #26A69A;
+  --cn-teal-light: #8FD5CE;
+  --cn-teal-bg: rgba(38, 198, 218, 0.15);
+  --cn-orange: #FF6E40;
+  --cn-orange-light: #FFB899;
+  --cn-orange-bg: rgba(255, 138, 101, 0.15);
+  --cn-red: #F87171;
+
+  /* ─── CareNet Semantic Dark ─── */
+  --cn-text: #E2E8F0;
+  --cn-text-secondary: #94A3B8;
+  --cn-text-heading: #F1F5F9;
+  --cn-bg-page: #0F172A;
+  --cn-bg-card: #1E293B;
+  --cn-bg-sidebar: #1E293B;
+  --cn-bg-header: #1E293B;
+  --cn-bg-input: #334155;
+  --cn-border: #334155;
+  --cn-border-light: #1E293B;
+  --cn-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --cn-shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --cn-shadow-sidebar: 2px 0 20px rgba(0, 0, 0, 0.3);
+  --cn-shadow-header: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* ─── Colored Button Shadows (Hero — subdued for dark) ─── */
+  --cn-shadow-pink: rgba(233, 154, 175, 0.2);
+  --cn-shadow-green: rgba(114, 204, 120, 0.2);
+  --cn-shadow-orange: rgba(255, 110, 64, 0.2);
+  --cn-bg-hero: rgba(254, 180, 197, 0.08);
+
+  /* ─── Gradients remain same in dark (they're already vibrant) ─── */
+  --cn-gradient-dark-hero: radial-gradient(143.86% 887.35% at -10.97% -22.81%, #0F172A 0%, #020617 100%);
+}
+
+/* ─── Tailwind v4 theme mapping ─── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ─── CareNet brand mapped to Tailwind ─── */
+  --color-cn-pink: var(--cn-pink);
+  --color-cn-pink-light: var(--cn-pink-light);
+  --color-cn-pink-bg: var(--cn-pink-bg);
+  --color-cn-green: var(--cn-green);
+  --color-cn-green-light: var(--cn-green-light);
+  --color-cn-green-bg: var(--cn-green-bg);
+  --color-cn-purple: var(--cn-purple);
+  --color-cn-purple-light: var(--cn-purple-light);
+  --color-cn-purple-bg: var(--cn-purple-bg);
+  --color-cn-amber: var(--cn-amber);
+  --color-cn-amber-light: var(--cn-amber-light);
+  --color-cn-amber-bg: var(--cn-amber-bg);
+  --color-cn-blue: var(--cn-blue);
+  --color-cn-blue-light: var(--cn-blue-light);
+  --color-cn-blue-bg: var(--cn-blue-bg);
+  --color-cn-teal: var(--cn-teal);
+  --color-cn-teal-light: var(--cn-teal-light);
+  --color-cn-teal-bg: var(--cn-teal-bg);
+  --color-cn-orange: var(--cn-orange);
+  --color-cn-orange-light: var(--cn-orange-light);
+  --color-cn-orange-bg: var(--cn-orange-bg);
+  --color-cn-red: var(--cn-red);
+  --color-cn-text: var(--cn-text);
+  --color-cn-text-secondary: var(--cn-text-secondary);
+  --color-cn-text-heading: var(--cn-text-heading);
+  --color-cn-bg-page: var(--cn-bg-page);
+  --color-cn-bg-card: var(--cn-bg-card);
+  --color-cn-bg-input: var(--cn-bg-input);
+  --color-cn-border: var(--cn-border);
+  --color-cn-border-light: var(--cn-border-light);
+
+  /* Font */
+  --font-sans: var(--cn-font-family);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-cn-bg-page text-cn-text;
+    font-family: var(--cn-font-family);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  /* Bangla script needs slightly more line-height for proper rendering */
+  html[lang="bn"] {
+    line-height: 1.7;
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--cn-text-heading);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--cn-text-heading);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--cn-text-heading);
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    color: var(--cn-text-heading);
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
+
+/* ─── CareNet Utility Classes ─── */
+@layer components {
+  /* ─── Mobile-First Utilities (Phase 0.4) ─── */
+
+  /* Touch-friendly tap targets: minimum 44×44px */
+  .cn-touch-target {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Safe-area padding for notched devices */
+  .cn-safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .cn-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .cn-safe-x {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  /* Pull-to-refresh container */
+  .cn-pull-refresh {
+    overscroll-behavior-y: contain;
+  }
+
+  /* Mobile scrollable list (momentum scrolling) */
+  .cn-scroll-mobile {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+
+  /* Prevent text selection on interactive elements */
+  .cn-no-select {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Mobile-friendly horizontal scroll */
+  .cn-scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cn-scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Bottom-nav spacer: prevents content from hiding behind fixed BottomNav */
+  .cn-bottom-spacer {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Capacitor status bar spacer */
+  .cn-status-bar {
+    padding-top: env(safe-area-inset-top, 20px);
+  }
+
+  /* ─── Existing Card/Component Utilities ─── */
+  .cn-card {
+    background: var(--cn-bg-card);
+    border-radius: 12px;
+    box-shadow: var(--cn-shadow-card);
+    transition: all 0.3s ease;
+  }
+  .cn-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--cn-shadow-card-hover);
+  }
+
+  .cn-card-flat {
+    background: var(--cn-bg-card);
+    border-radius: 12px;
+    box-shadow: var(--cn-shadow-card);
+  }
+
+  .cn-stat-card {
+    background: var(--cn-bg-card);
+    border-radius: 12px;
+    box-shadow: var(--cn-shadow-card);
+    padding: 1.25rem;
+  }
+
+  .cn-page-title {
+    color: var(--cn-text);
+  }
+
+  .cn-page-sub {
+    color: var(--cn-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .cn-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .cn-table-row:hover {
+    background: var(--cn-bg-input);
+  }
+
+  .cn-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--cn-border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.875rem;
+    color: var(--cn-text);
+    background: var(--cn-bg-card);
+  }
+  .cn-input:focus {
+    border-color: var(--cn-pink);
+    box-shadow: 0 0 0 3px rgba(219, 134, 154, 0.12);
+  }
+
+  /* Legacy class aliases for backward compatibility */
+  .finance-card {
+    background: var(--cn-bg-card);
+    border-radius: 12px;
+    box-shadow: var(--cn-shadow-card);
+    transition: all 0.3s ease;
+  }
+  .finance-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--cn-shadow-card-hover);
+  }
+  .stat-card {
+    background: var(--cn-bg-card);
+    border-radius: 12px;
+    box-shadow: var(--cn-shadow-card);
+    padding: 1.25rem;
+  }
+  .page-title {
+    color: var(--cn-text);
+  }
+  .page-sub {
+    color: var(--cn-text-secondary);
+    font-size: 0.875rem;
+  }
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .table-row:hover {
+    background: var(--cn-bg-input);
+  }
+  .input-field {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--cn-border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.875rem;
+    color: var(--cn-text);
+    background: var(--cn-bg-card);
+  }
+  .input-field:focus {
+    border-color: var(--cn-pink);
+    box-shadow: 0 0 0 3px rgba(219, 134, 154, 0.12);
+  }
+}
+
+/* ─── Dark Mode: Override Inline Hardcoded Colors ───
+ * Many pages still use style={{color:"#535353"}} etc.
+ * These CSS attribute selectors use !important to ensure dark mode
+ * works even on unmigrated inline styles. Once all pages use cn.*
+ * tokens, this section can be removed.
+ */
+.dark {
+  /* Text colors */
+  [style*="color: #535353"],
+  [style*="color:#535353"],
+  [style*="color: rgb(83, 83, 83)"] {
+    color: var(--cn-text) !important;
+  }
+  [style*="color: #848484"],
+  [style*="color:#848484"],
+  [style*="color: rgb(132, 132, 132)"] {
+    color: var(--cn-text-secondary) !important;
+  }
+  [style*="color: #1E293B"],
+  [style*="color:#1E293B"] {
+    color: var(--cn-text-heading) !important;
+  }
+
+  /* Background overrides */
+  [style*="background-color: #F5F7FA"],
+  [style*="backgroundColor: #F5F7FA"],
+  [style*="background-color:#F5F7FA"],
+  [style*="backgroundColor:#F5F7FA"] {
+    background-color: var(--cn-bg-page) !important;
+  }
+  [style*="background: white"],
+  [style*="background:white"],
+  [style*="background: #FFFFFF"],
+  [style*="background:#FFFFFF"],
+  [style*="background-color: white"],
+  [style*="backgroundColor: white"],
+  [style*="background: #fff"],
+  [style*="background:#fff"] {
+    background: var(--cn-bg-card) !important;
+  }
+  [style*="background: #F5F7FA"],
+  [style*="background:#F5F7FA"] {
+    background: var(--cn-bg-input) !important;
+  }
+  [style*="background: #F9FAFB"],
+  [style*="background:#F9FAFB"],
+  [style*="background: #F3F3F5"],
+  [style*="background:#F3F3F5"] {
+    background: var(--cn-bg-input) !important;
+  }
+
+  /* Border overrides */
+  [style*="border-color: #E5E7EB"],
+  [style*="borderColor: #E5E7EB"],
+  [style*="border-color:#E5E7EB"],
+  [style*="borderColor:#E5E7EB"] {
+    border-color: var(--cn-border) !important;
+  }
+  [style*="border: 1px solid #F3F4F6"],
+  [style*="border: 1px solid #F9FAFB"],
+  [style*="border: 1px solid #E5E7EB"] {
+    border-color: var(--cn-border) !important;
+  }
+
+  /* Shadow overrides for inline box-shadow */
+  [style*="box-shadow: 2px 0 20px rgba(0,0,0,0.06)"],
+  [style*="box-shadow: 0 2px 8px rgba(0,0,0,0.06)"],
+  [style*="box-shadow: 0 2px 8px rgba(0,0,0,0.08)"],
+  [style*="boxShadow: 0 2px 8px rgba(0,0,0,0.06)"],
+  [style*="boxShadow: 0 2px 8px rgba(0,0,0,0.08)"] {
+    box-shadow: var(--cn-shadow-card) !important;
+  }
+
+  /* White background sections (like footer) */
+  [style*="backgroundColor: #FFFFFF"],
+  [style*="backgroundColor:#FFFFFF"],
+  section[style*="background-color: #FFFFFF"],
+  section[style*="backgroundColor: #FFFFFF"],
+  div[style*="background-color: #FFFFFF"],
+  div[style*="backgroundColor: #FFFFFF"] {
+    background-color: var(--cn-bg-card) !important;
+  }
+
+  /* FFF5F7 hero sections → dark equivalent */
+  [style*="background-color: #FFF5F7"],
+  [style*="backgroundColor: #FFF5F7"],
+  [style*="background-color:#FFF5F7"],
+  [style*="backgroundColor:#FFF5F7"] {
+    background-color: rgba(254, 180, 197, 0.08) !important;
+  }
+
+  /* Override inline <style> blocks that hardcode white backgrounds on utility classes */
+  .finance-card,
+  .stat-card,
+  .cn-card,
+  .cn-card-flat,
+  .cn-stat-card {
+    background: var(--cn-bg-card) !important;
+    box-shadow: var(--cn-shadow-card) !important;
+  }
+  .input-field,
+  .cn-input {
+    background: var(--cn-bg-card) !important;
+    color: var(--cn-text) !important;
+    border-color: var(--cn-border) !important;
+  }
+  .badge-pill,
+  .cn-badge {
+    /* badges keep their individual bg/color from style props */
+  }
+  .table-row:hover,
+  .cn-table-row:hover {
+    background: var(--cn-bg-input) !important;
+  }
+}

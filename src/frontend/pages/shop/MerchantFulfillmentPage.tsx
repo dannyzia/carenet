@@ -1,0 +1,30 @@
+"use client";
+import React from "react";
+import { Package, Truck, ArrowLeft, MapPin, Phone, User, CheckCircle2, Clock, Printer, ChevronRight, ShieldCheck, AlertCircle, ExternalLink, MessageSquare } from "lucide-react";
+import { Button } from "@/frontend/components/ui/button";
+import { useNavigate, useParams } from "react-router";
+import { useAsyncData, useDocumentTitle } from "@/frontend/hooks";
+import { shopService } from "@/backend/services/shop.service";
+import { PageSkeleton } from "@/frontend/components/PageSkeleton";
+import { cn } from "@/frontend/theme/tokens";
+import { PageHero } from "@/frontend/components/shared/PageHero";
+import { useTranslation } from "react-i18next";
+
+export default function MerchantFulfillmentPage() {
+  const { t: tDocTitle } = useTranslation("common");
+  useDocumentTitle(tDocTitle("pageTitles.merchantFulfillment", "Merchant Fulfillment"));
+
+  const navigate = useNavigate();
+  const { id = "ORD-55421" } = useParams();
+  const { data: fulfillment, loading } = useAsyncData(() => shopService.getMerchantFulfillment());
+
+  if (loading || !fulfillment) return <PageSkeleton />;
+
+  return (
+    <div>
+      <PageHero gradient="radial-gradient(143.86% 887.35% at -10.97% -22.81%, #1F2937 0%, #111827 100%)" className="pt-8 pb-32 px-6"><div className="max-w-5xl mx-auto"><div className="flex justify-between items-center mb-12"><div className="flex items-center gap-4 text-white"><h1 className="text-2xl font-bold">Process Order #{id}</h1></div><div className="flex gap-3"><Button variant="ghost" className="text-white hover:bg-white/10 rounded-xl"><Printer className="w-4 h-4 mr-2" /> Print Packing Slip</Button><Button className="bg-[#E64A19] hover:bg-[#D84315] text-white font-black rounded-xl h-11 px-6 shadow-lg">Confirm Shipment</Button></div></div><div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div className="finance-card p-6 !bg-white/5 !backdrop-blur-xl !border-white/10 text-white flex items-center gap-4"><div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400"><Clock /></div><div><p className="text-[10px] font-bold text-white/40 uppercase">SLA Status</p><p className="font-bold">Ship by 04:00 PM</p></div></div><div className="finance-card p-6 !bg-white/5 !backdrop-blur-xl !border-white/10 text-white flex items-center gap-4"><div className="w-12 h-12 rounded-xl bg-[#7CE577]/20 flex items-center justify-center text-[#7CE577]"><ShieldCheck /></div><div><p className="text-[10px] font-bold text-white/40 uppercase">Payment Status</p><p className="font-bold">Escrow Released</p></div></div><div className="finance-card p-6 !bg-white/5 !backdrop-blur-xl !border-white/10 text-white flex items-center gap-4"><div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400"><Truck /></div><div><p className="text-[10px] font-bold text-white/40 uppercase">Logistics</p><p className="font-bold">CareNet Fast</p></div></div></div></div></PageHero>
+      <div className="max-w-5xl mx-auto px-6 -mt-16"><div className="grid grid-cols-1 lg:grid-cols-3 gap-8"><div className="lg:col-span-2 space-y-6"><div className="finance-card p-8"><h3 className="text-xl font-bold text-gray-800 mb-8">Shipment Items</h3><div className="space-y-6">{[{ name: "Digital Blood Pressure Monitor", sku: "OM-BP-001", qty: 1, stock: 42 }, { name: "MediPro Pulse Oximeter", sku: "MP-PO-22", qty: 2, stock: 12 }].map((item, i) => (<div key={i} className="flex items-center justify-between pb-6 border-b border-gray-50 last:border-none last:pb-0"><div className="flex items-center gap-6"><div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center"><Package className="w-8 h-8 text-gray-300" /></div><div><p className="font-bold text-gray-800">{item.name}</p><p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">SKU: {item.sku} {"\u2022"} Stock: {item.stock}</p></div></div><div className="text-right"><p className="text-xl font-black text-gray-800">{"\u00D7"}{item.qty}</p></div></div>))}</div></div><div className="finance-card p-8"><h3 className="text-xl font-bold text-gray-800 mb-8">Shipping Configuration</h3><div className="space-y-6"><div className="space-y-2"><label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Carrier Tracking ID</label><div className="flex gap-3"><input className="flex-1 h-14 px-5 rounded-2xl bg-gray-50 border border-gray-100 font-mono text-sm outline-none" placeholder="e.g. CNF-99021-X" /><Button className="h-14 px-8 rounded-2xl bg-gray-900 text-white font-black text-xs">Verify ID</Button></div></div></div></div></div><aside className="lg:col-span-1 space-y-6"><div className="finance-card p-8"><h3 className="font-bold text-gray-800 mb-6 flex items-center gap-2"><User className="w-4 h-4 text-gray-400" />Customer Profile</h3><div className="space-y-6"><div className="flex items-center gap-4"><div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 font-bold">ZA</div><div><p className="font-bold text-gray-800">Zubayer Ahmed</p><div className="flex items-center gap-1 text-[10px] text-[#5FB865] font-black uppercase"><ShieldCheck className="w-3 h-3" /> Preferred Buyer</div></div></div><div className="space-y-4 pt-6 border-t border-gray-50"><div className="flex gap-3"><MapPin className="w-4 h-4 text-gray-300 mt-1 flex-shrink-0" /><p className="text-xs text-gray-500 leading-relaxed">House 24, Road 12, Block D, Banani, Dhaka</p></div><div className="flex gap-3"><Phone className="w-4 h-4 text-gray-300 flex-shrink-0" /><p className="text-xs text-gray-500">+880 171XXXXXXX</p></div></div><Button variant="ghost" className="w-full text-xs font-bold text-[#FEB4C5] bg-[#FFF5F7] h-11 rounded-xl"><MessageSquare className="w-4 h-4 mr-2" /> Message Customer</Button></div></div></aside></div></div>
+      <style dangerouslySetInnerHTML={{ __html: ".finance-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 2.5rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); }" }} />
+    </div>
+  );
+}

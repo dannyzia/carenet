@@ -1,0 +1,288 @@
+/**
+ * CareNet Mock Auth Service — Email + Password + TOTP MFA
+ *
+ * Simulates backend auth: email/password login, TOTP verification, registration.
+ * All demo accounts use password "demo1234" and TOTP code "123456".
+ */
+import type { Role, User, RegisterData } from "./types";
+
+export const DEMO_PASSWORD = "demo1234";
+export const DEMO_TOTP = "123456";
+/** @deprecated Use DEMO_TOTP */
+export const DEMO_OTP = DEMO_TOTP;
+
+/** Demo accounts — one per role, plus a multi-role user */
+const DEMO_USERS: User[] = [
+  {
+    id: "demo-caregiver-1",
+    name: "Karim Uddin",
+    email: "caregiver@carenet.demo",
+    phone: "01712345678",
+    roles: ["caregiver"],
+    activeRole: "caregiver",
+    district: "Dhaka",
+    createdAt: "2024-06-15",
+    mfaEnrolled: true,
+    profile: { specialty: "Elderly Care", experience: 5, rating: 4.8 },
+  },
+  {
+    id: "demo-guardian-1",
+    name: "Rashed Hossain",
+    email: "guardian@carenet.demo",
+    phone: "01812345678",
+    roles: ["guardian"],
+    activeRole: "guardian",
+    district: "Chittagong",
+    createdAt: "2024-03-10",
+    mfaEnrolled: true,
+  },
+  {
+    id: "demo-patient-1",
+    name: "Amina Begum",
+    email: "patient@carenet.demo",
+    phone: "01912345678",
+    roles: ["patient"],
+    activeRole: "patient",
+    district: "Dhaka",
+    createdAt: "2024-08-22",
+    mfaEnrolled: true,
+  },
+  {
+    id: "demo-agency-1",
+    name: "CareFirst Agency",
+    email: "agency@carenet.demo",
+    phone: "01612345678",
+    roles: ["agency"],
+    activeRole: "agency",
+    district: "Dhaka",
+    createdAt: "2024-01-05",
+    mfaEnrolled: true,
+    profile: { agencyName: "CareFirst BD", license: "BD-AGN-2024-001" },
+  },
+  {
+    id: "demo-admin-1",
+    name: "Admin User",
+    email: "admin@carenet.demo",
+    phone: "01512345678",
+    roles: ["admin"],
+    activeRole: "admin",
+    district: "Dhaka",
+    createdAt: "2024-01-01",
+    mfaEnrolled: true,
+  },
+  {
+    id: "demo-moderator-1",
+    name: "Mod User",
+    email: "moderator@carenet.demo",
+    phone: "01412345678",
+    roles: ["moderator"],
+    activeRole: "moderator",
+    district: "Dhaka",
+    createdAt: "2024-05-01",
+    mfaEnrolled: true,
+  },
+  {
+    id: "demo-shop-1",
+    name: "MediMart Store",
+    email: "shop@carenet.demo",
+    phone: "01312345678",
+    roles: ["shop"],
+    activeRole: "shop",
+    district: "Dhaka",
+    createdAt: "2024-04-15",
+    mfaEnrolled: true,
+    profile: { shopName: "MediMart", category: "Medicines" },
+  },
+  {
+    id: "demo-multi-1",
+    name: "Multi-Role Demo",
+    email: "multi@carenet.demo",
+    phone: "01011111111",
+    roles: ["guardian", "caregiver", "admin"],
+    activeRole: "guardian",
+    district: "Dhaka",
+    createdAt: "2024-01-01",
+    mfaEnrolled: true,
+  },
+];
+
+/** Role -> demo email mapping (for quick-login buttons) */
+export const DEMO_ACCOUNTS: { role: Role; email: string; name: string }[] = [
+  { role: "caregiver", email: "caregiver@carenet.demo", name: "Karim Uddin" },
+  { role: "guardian", email: "guardian@carenet.demo", name: "Rashed Hossain" },
+  { role: "patient", email: "patient@carenet.demo", name: "Amina Begum" },
+  { role: "agency", email: "agency@carenet.demo", name: "CareFirst Agency" },
+  { role: "admin", email: "admin@carenet.demo", name: "Admin User" },
+  { role: "moderator", email: "moderator@carenet.demo", name: "Mod User" },
+  { role: "shop", email: "shop@carenet.demo", name: "MediMart Store" },
+];
+
+/**
+ * Mock email + password login.
+ * Demo: any @carenet.demo email with password "demo1234" works.
+ * Any other email with password length >= 8 also works (for testing).
+ */
+export async function mockLogin(
+  email: string,
+  password: string
+): Promise<{ success: boolean; user?: User; needsMfa?: boolean; error?: string }> {
+  await delay(600);
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  // Check demo accounts first
+  const demoUser = DEMO_USERS.find((u) => u.email === normalizedEmail);
+  if (demoUser) {
+    if (password !== DEMO_PASSWORD) {
+      return { success: false, error: `Invalid password. Demo password: ${DEMO_PASSWORD}` };
+    }
+    // Demo users always have MFA enrolled → require TOTP
+    return { success: true, user: { ...demoUser }, needsMfa: true };
+  }
+
+  // For non-demo: any email with password >= 8 chars succeeds
+  if (password.length < 8) {
+    return { success: false, error: "Invalid email or password" };
+  }
+
+  // New/unknown user — simulate MFA-enrolled user
+  const newUser: User = {
+    id: `user-${Date.now()}`,
+    name: normalizedEmail.split("@")[0],
+    email: normalizedEmail,
+    roles: [],
+    activeRole: "guardian",
+    mfaEnrolled: true,
+    createdAt: new Date().toISOString(),
+  };
+  return { success: true, user: newUser, needsMfa: true };
+}
+
+/**
+ * Verify TOTP code. Demo code: "123456".
+ */
+export async function mockVerifyTotp(
+  code: string
+): Promise<{ success: boolean; error?: string }> {
+  await delay(500);
+  if (code === DEMO_TOTP) {
+    return { success: true };
+  }
+  return { success: false, error: `Invalid code. Demo TOTP: ${DEMO_TOTP}` };
+}
+
+/**
+ * Register a new user (mock).
+ */
+export async function mockRegister(
+  data: RegisterData
+): Promise<{ success: boolean; user?: User; error?: string }> {
+  await delay(1000);
+
+  const normalizedEmail = data.email.trim().toLowerCase();
+  const existing = DEMO_USERS.find((u) => u.email === normalizedEmail);
+  if (existing) {
+    return { success: false, error: "Email already registered" };
+  }
+
+  const newUser: User = {
+    id: `user-${Date.now()}`,
+    name: data.name,
+    email: normalizedEmail,
+    phone: data.phone,
+    roles: [data.role],
+    activeRole: data.role,
+    district: data.district,
+    mfaEnrolled: false, // needs to set up TOTP after registration
+    createdAt: new Date().toISOString(),
+    profile: data.roleData,
+  };
+
+  return { success: true, user: newUser };
+}
+
+/**
+ * Mock forgot password — sends reset link to email.
+ */
+export async function mockForgotPassword(
+  email: string
+): Promise<{ success: boolean; error?: string }> {
+  await delay(800);
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail.includes("@")) {
+    return { success: false, error: "Invalid email address" };
+  }
+  console.log(`[MockAuth] Password reset email sent to ${normalizedEmail}`);
+  return { success: true };
+}
+
+/**
+ * Mock reset password.
+ */
+export async function mockResetPassword(
+  password: string
+): Promise<{ success: boolean; error?: string }> {
+  await delay(800);
+  if (password.length < 8) {
+    return { success: false, error: "Password must be at least 8 characters" };
+  }
+  return { success: true };
+}
+
+/**
+ * Get demo user by role (for quick-login).
+ */
+export function getDemoUserByRole(role: Role): User {
+  const found = DEMO_USERS.find(
+    (u) => u.activeRole === role || u.roles.includes(role)
+  );
+  if (found) return { ...found, activeRole: role };
+
+  return {
+    id: `demo-${role}`,
+    name: `Demo ${role}`,
+    email: `${role}@carenet.demo`,
+    roles: [role],
+    activeRole: role,
+    mfaEnrolled: true,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+// ─── Legacy aliases (backward compat) ───────────────────────────
+
+/** @deprecated Use mockLogin instead */
+export async function mockRequestOtp(
+  phone: string
+): Promise<{ success: boolean; error?: string }> {
+  await delay(600);
+  return { success: true };
+}
+
+/** @deprecated Use mockLogin + mockVerifyTotp instead */
+export async function mockVerifyOtp(
+  phone: string,
+  code: string
+): Promise<{ success: boolean; user?: User; error?: string }> {
+  if (code !== DEMO_TOTP) {
+    return { success: false, error: "Invalid code" };
+  }
+  const found = DEMO_USERS.find((u) => u.phone === phone);
+  if (found) return { success: true, user: { ...found } };
+  return {
+    success: true,
+    user: {
+      id: `user-${Date.now()}`,
+      name: "",
+      email: "",
+      phone,
+      roles: [],
+      activeRole: "guardian",
+      createdAt: new Date().toISOString(),
+    },
+  };
+}
+
+function delay(ms: number) {
+  return new Promise((r) => setTimeout(r, ms));
+}

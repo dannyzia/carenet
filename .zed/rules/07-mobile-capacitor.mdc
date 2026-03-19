@@ -1,0 +1,14 @@
+---
+description: "CareNet 2 mobile guidance for Capacitor-safe changes, native helpers, safe areas, and hybrid app behavior."
+globs:
+  - "**/*.{ts,tsx}"
+  - "**/capacitor.config.ts"
+---
+
+# Mobile And Capacitor
+
+- Keep native-only calls behind the current platform helpers.
+- Recheck `src/frontend/native/` when changing auth, notifications, camera, geolocation, status bar, or back-button behavior.
+- Preserve safe-area handling and mobile navigation ergonomics.
+- If a change affects native behavior or bundled assets used by native shells, plan for `npm run build` and `npx cap sync`.
+- Avoid web-only assumptions that break hybrid wrappers or offline startup.

@@ -1,0 +1,15 @@
+/**
+ * Daily Task / Schedule Mock Data (Phase 4)
+ */
+import type { DailyTask } from "@/backend/models";
+
+export const MOCK_DAILY_TASKS: DailyTask[] = [
+  { id: "dt-1", type: "task", title: "Blood sugar check — Rashida Begum", details: "Fasting blood sugar before breakfast. Record in care log.", time: "07:00", date: "2026-03-18", patientId: "p-1", patientName: "Rashida Begum", caregiverId: "cg-1", status: "completed", completedAt: "2026-03-18T07:05:00Z", completionNote: "5.8 mmol/L — normal range", createdBy: "system", createdByRole: "agency", createdAt: "2026-03-17T20:00:00Z" },
+  { id: "dt-2", type: "task", title: "Morning medication — Rashida Begum", details: "Metformin 500mg + Amlodipine 5mg with breakfast", time: "07:30", date: "2026-03-18", patientId: "p-1", patientName: "Rashida Begum", caregiverId: "cg-1", status: "completed", completedAt: "2026-03-18T07:32:00Z", createdBy: "system", createdByRole: "agency", createdAt: "2026-03-17T20:00:00Z" },
+  { id: "dt-3", type: "task", title: "Wound dressing change — Kamal Hossain", details: "Clean wound site, apply Betadine, re-dress with sterile gauze. Take photo for care log.", time: "09:00", date: "2026-03-18", patientId: "p-2", patientName: "Kamal Hossain", caregiverId: "cg-1", status: "in_progress", createdBy: "cg-1", createdByRole: "caregiver", createdAt: "2026-03-17T22:00:00Z" },
+  { id: "dt-4", type: "event", title: "Physiotherapy session — Kamal Hossain", details: "ROM exercises upper limbs, 30 minutes. Physio arriving at patient home.", time: "10:30", date: "2026-03-18", patientId: "p-2", patientName: "Kamal Hossain", caregiverId: "cg-1", status: "pending", createdBy: "guardian-1", createdByRole: "guardian", createdAt: "2026-03-16T10:00:00Z" },
+  { id: "dt-5", type: "task", title: "Blood pressure check — Rashida Begum", details: "Midday BP reading. Alert guardian if systolic > 150.", time: "12:00", date: "2026-03-18", patientId: "p-1", patientName: "Rashida Begum", caregiverId: "cg-1", status: "pending", createdBy: "system", createdByRole: "agency", createdAt: "2026-03-17T20:00:00Z" },
+  { id: "dt-6", type: "task", title: "Afternoon medication — Rashida Begum", details: "Metformin 500mg after lunch", time: "13:30", date: "2026-03-18", patientId: "p-1", patientName: "Rashida Begum", caregiverId: "cg-1", status: "pending", createdBy: "system", createdByRole: "agency", createdAt: "2026-03-17T20:00:00Z" },
+  { id: "dt-7", type: "event", title: "Guardian video call — Nasreen Akhter", details: "Scheduled weekly check-in video call with guardian (daughter).", time: "15:00", date: "2026-03-18", patientId: "p-3", patientName: "Nasreen Akhter", caregiverId: "cg-1", guardianId: "g-2", status: "pending", createdBy: "g-2", createdByRole: "guardian", createdAt: "2026-03-15T14:00:00Z" },
+  { id: "dt-8", type: "task", title: "Evening vitals — all patients", details: "Record BP, temp, pulse for all assigned patients.", time: "18:00", date: "2026-03-18", caregiverId: "cg-1", status: "pending", createdBy: "system", createdByRole: "agency", createdAt: "2026-03-17T20:00:00Z" },
+];

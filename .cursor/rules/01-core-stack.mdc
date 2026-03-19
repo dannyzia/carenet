@@ -1,0 +1,28 @@
+---
+description: "CareNet 2 repo-specific stack and architecture guardrails. Always apply when editing or reviewing this project."
+alwaysApply: true
+---
+
+# Core Stack And Architecture
+
+Treat the current repo as the source of truth. If a generic template conflicts with code that already ships here, follow the repo.
+
+## Real Stack
+- React 18 plus TypeScript on Vite.
+- Tailwind CSS v4 is configured through `src/styles/tailwind.css`.
+- Motion imports come from `motion/react`.
+- Routing uses `react-router`, not `react-router-dom`, with repo helpers in `src/app/routes.ts` and `src/lib/react-router-shim.ts`.
+- Supabase service code lives in `src/backend/services/`.
+- Offline storage and sync live in `src/backend/offline/`.
+- i18n bootstraps from `src/frontend/i18n/` with committed locale JSON in `src/locales/en/` and `src/locales/bn/`.
+- Capacitor and native helpers live in `capacitor.config.ts` and `src/frontend/native/`.
+
+## Architecture Landmarks
+- Keep route registration in `src/app/routes.ts`.
+- Keep app-wide wiring in `src/app/App.tsx`.
+- Route auth and session behavior through the existing auth store and context in `src/backend/store/auth/`.
+
+## Do Not Introduce By Default
+- Redux, Zustand, Jotai, or TanStack Query.
+- Next.js, Expo, React Native, Firebase, or Prisma.
+- New top-level architecture layers when the current folders already have a home for the code.

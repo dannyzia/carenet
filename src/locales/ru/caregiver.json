@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "patients": "My Patients",
+    "jobs": "My Jobs",
+    "careLog": "Care Log",
+    "schedule": "Schedule",
+    "messages": "Messages",
+    "earnings": "Earnings",
+    "reviews": "Reviews",
+    "documents": "Documents",
+    "profile": "Profile"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}",
+    "activeShift": "Active Shift",
+    "todaySchedule": "Today's Schedule",
+    "upcomingShifts": "Upcoming Shifts",
+    "recentLogs": "Recent Logs",
+    "earnings": "Earnings"
+  },
+  "shift": {
+    "checkIn": "Check In",
+    "checkOut": "Check Out",
+    "onTime": "On Time",
+    "late": "Late",
+    "gracePeriod": "Grace Period",
+    "currentShift": "Current Shift",
+    "shiftDetails": "Shift Details",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration"
+  },
+  "careLog": {
+    "title": "New Care Log",
+    "whatLogging": "What are you logging?",
+    "meal": "Meal",
+    "medication": "Medication",
+    "vitals": "Vitals",
+    "exercise": "Exercise",
+    "bathroom": "Bathroom",
+    "sleep": "Sleep",
+    "observation": "Observation",
+    "incident": "Incident",
+    "notes": "Notes",
+    "save": "Save Care Log",
+    "saved": "Care Log Saved!",
+    "logAnother": "Log Another Entry",
+    "recentLogs": "Recent Logs (This Shift)"
+  },
+  "jobs": {
+    "available": "Available Jobs",
+    "applied": "Applied",
+    "matched": "Matched",
+    "applyNow": "Apply Now",
+    "viewDetails": "View Details"
+  }
+}

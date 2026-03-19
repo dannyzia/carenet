@@ -1,0 +1,17 @@
+---
+description: "CareNet 2 testing guidance for Vitest, Testing Library, Playwright, mobile flows, offline scenarios, and mock-mode resilience."
+globs:
+  - "**/*.{test,spec}.{ts,tsx,js,jsx}"
+  - "**/vitest.config.ts"
+  - "**/playwright.config.ts"
+  - "e2e/**/*.{ts,tsx}"
+---
+
+# Testing
+
+- Add or update Vitest coverage for new hooks, utilities, and service logic.
+- Add or update Playwright coverage for new user-visible flows, especially auth, mobile, offline, realtime, and role-based behavior.
+- Vitest defaults to `node`; opt into jsdom only when the test genuinely needs DOM APIs.
+- Reuse existing demo or mock-auth patterns instead of inventing a parallel test login flow.
+- Use browser network controls such as `context.setOffline(true)` or Chromium network emulation for offline Playwright coverage.
+- Prefer behavior assertions over implementation-detail assertions.

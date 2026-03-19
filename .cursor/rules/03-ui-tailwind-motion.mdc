@@ -1,0 +1,17 @@
+---
+description: "CareNet 2 UI guidance for Tailwind v4, shared tokens, Radix-based components, MUI coexistence, and motion/react."
+globs:
+  - "**/*.{tsx,jsx,css}"
+---
+
+# UI, Tailwind, And Motion
+
+- Match the existing Tailwind v4 setup in `src/styles/tailwind.css`.
+- Prefer tokenized colors, CSS variables, and shared theme values over new color literals.
+- Prefer shared components and Radix-based primitives before creating new widgets.
+- Reuse shared UI from `src/frontend/components/shared/`, `src/frontend/components/shell/`, and `src/frontend/components/ui/`.
+- Keep design tokens in `src/frontend/theme/tokens.ts` and CSS variables in `src/styles/theme.css`.
+- Use MUI when an existing surface already leans on MUI or when the component is materially easier there.
+- Import animation helpers from `motion/react`.
+- Preserve reduced-motion handling, dark-mode behavior, safe-area helpers, and good touch-target sizes.
+- Keep accessibility in view: icon-only controls need labels and decorative icons should stay hidden from assistive tech.

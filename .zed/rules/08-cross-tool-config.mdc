@@ -1,0 +1,20 @@
+---
+description: "CareNet 2 AI tooling guidance for generated rule files, skill copies, and the shared source-of-truth pack."
+globs:
+  - ".cursor/**/*"
+  - ".github/**/*"
+  - ".kilocode/**/*"
+  - ".windsurf*"
+  - ".agents/**/*"
+  - ".agent/**/*"
+  - "**/scripts/sync-ai-context.mjs"
+  - "**/package.json"
+---
+
+# Cross-Tool Config
+
+- Treat `../Rules&Skills/packs/carenet-2` as the source-of-truth for this project's AI rules and skills when that sibling repo exists.
+- Generated project copies should be overwritten by sync, not hand-maintained.
+- Cursor should use the modular `.cursor/rules/*.mdc` files.
+- Other workspace tools should use the generated combined rule files.
+- After material Cursor rule changes, run `npx cursor-doctor scan` and `npx cursor-doctor lint` when available.

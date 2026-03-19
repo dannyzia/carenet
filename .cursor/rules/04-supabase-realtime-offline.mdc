@@ -1,0 +1,15 @@
+---
+description: "CareNet 2 service-layer guidance for Supabase, realtime subscriptions, Dexie, and offline-safe write flows."
+globs:
+  - "**/*.{ts,tsx,sql}"
+---
+
+# Supabase, Realtime, And Offline
+
+- Keep `USE_SUPABASE` mock fallback behavior intact.
+- Prefer shared helpers like `sbRead`, `sbWrite`, `sb`, and `currentUserId` from `src/backend/services/_sb.ts` when they fit the task.
+- Use `supabase.channel(...).on('postgres_changes', ...)` for realtime subscriptions.
+- Clean up channels and listeners on teardown.
+- If user actions must survive disconnects, route writes through the Dexie queue and sync engine instead of online-only mutations.
+- Check `supabase/functions/` and `supabase/migrations/` before changing backend behavior that depends on them.
+- Keep conflict-prone flows retry-safe and idempotent where possible.
